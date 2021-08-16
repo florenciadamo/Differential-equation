@@ -1,0 +1,40 @@
+# 1) Funcion ----
+fn <- function(t,y){     # Completar con la función f(t,y(t)) que es igual a dy/dt
+  return(t-y+2)
+}
+
+# 2) Algortimo ----
+Metodo_Euler = function(fn, a, b, N, alfa){
+  #Paso 1
+  h = (b - a)/N
+  
+  w = c(rep(NA, N + 1))
+  w[1] = alfa
+  
+  t = c(seq(a, b, h))
+  t[1] = a
+  
+  #Paso 2
+  for (i in 1:N) {
+    #Paso 3
+    w[i + 1] = w[i] + h * fn(t[i], w[i])
+    
+  }
+  
+  #Paso 4
+  return(data.frame(t,w))
+}
+
+# 3) Resolucion ----
+(Metodo_E= Metodo_Euler(fn, 0, 1, 10, 2))
+
+# 4) Grafico ----
+Grafico_Euler <-ggplot(data = Metodo_E,
+                       aes(x = t, y = w))+
+  geom_point(size=1, color="#69b3a2")+ 
+  geom_vline(xintercept=0)+
+  geom_hline(yintercept=0)+
+  ggtitle("Metodo Euler")+ 
+  theme_classic()
+
+Grafico_Euler
