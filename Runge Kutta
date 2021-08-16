@@ -1,0 +1,44 @@
+# 1) Funcion ----
+fn <- function(t,y){     # Completar con la función f(t,y(t)) que es igual a dy/dt
+  return(y-t^2+1)
+}
+
+# 2) Algortimo ----
+runge_kutta = function(fn, a, b, N, alfa){
+  #Paso 1
+  h = (b - a)/N
+  
+  w = c(rep(NA, N + 1))
+  w[1] = alfa
+  
+  t = c(seq(a, b, h))
+  t[1] = a
+  
+  for (i in 1:N) {
+    #Paso 3
+    k1 = h*fn(t[i], w[i])
+    k2 = h*fn(t[i] + h/2, w[i] + k1/2)
+    k3 = h*fn(t[i] + h/2, w[i] + k2/2)
+    k4 = h*fn(t[i + 1], w[i] + k3)
+    
+    #Paso 4
+    w[i + 1] = w[i] + (k1 + 2*k2 + 2*k3 + k4)/6
+    
+  }
+  #Paso 5
+  return(data.frame(t,w))
+}
+
+# 3) Resolucion ----
+Metodo_RK= runge_kutta(fn, 0, 2, 10, 0.5)
+Metodo_RK
+# 4) Grafico ----
+Grafico_RungeKutta <-ggplot(data = Metodo_RK,
+                       aes(x = t, y = w))+
+  geom_point(size=1, color="#69b3a2")+ 
+  geom_vline(xintercept=0)+
+  geom_hline(yintercept=0)+
+  ggtitle("Metodo Runge Kutta")+ 
+  theme_classic()
+
+Grafico_RungeKutta
